@@ -1,8 +1,9 @@
 <template>
     <v-date-picker
-            v-model="date"
+            :v-model="picker"
             class="mt-4"
     ></v-date-picker>
+
 </template>
 
 <script>
@@ -10,8 +11,11 @@
         name: "date-picker",
         data(){
             return{
-                data: ''
+                picker: new Date().toISOString().substr(0, 10),
             }
+        },
+        mounted(){
+                this.date
         }
     }
 </script>

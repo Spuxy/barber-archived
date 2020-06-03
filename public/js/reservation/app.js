@@ -1915,12 +1915,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "date-picker",
   data: function data() {
     return {
-      data: ''
+      picker: new Date().toISOString().substr(0, 10)
     };
+  },
+  mounted: function mounted() {
+    this.date;
   }
 });
 
@@ -1935,9 +1939,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
 //
 //
 //
@@ -2012,55 +2013,6 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         time: '15:30:00',
         reserved: false
-      }],
-      ww: [{
-        time: '08:00:00',
-        reserved: false
-      }, {
-        time: '08:30:00',
-        reserved: false
-      }, {
-        time: '09:00:00',
-        reserved: false
-      }, {
-        time: '09:30:00',
-        reserved: false
-      }, {
-        time: '10:00:00',
-        reserved: false
-      }, {
-        time: '10:30:00',
-        reserved: false
-      }, {
-        time: '11:00:00',
-        reserved: false
-      }, {
-        time: '11:30:00',
-        reserved: false
-      }, {
-        time: '12:00:00',
-        reserved: false
-      }, {
-        time: '12:30:00',
-        reserved: false
-      }, {
-        time: '13:00:00',
-        reserved: false
-      }, {
-        time: '13:30:00',
-        reserved: false
-      }, {
-        time: '14:00:00',
-        reserved: false
-      }, {
-        time: '14:30:00',
-        reserved: false
-      }, {
-        time: '15:00:00',
-        reserved: false
-      }, {
-        time: '15:30:00',
-        reserved: false
       }]
     };
   },
@@ -2085,17 +2037,21 @@ __webpack_require__.r(__webpack_exports__);
         array = this.filipReservedDays;
       }
 
-      array.forEach(function (item, index) {
-        for (index = 0; index < _this.worksDays.length; index++) {
-          if (item.from === _this.worksDays[index].time) {
-            _this.worksDays[index].reserved = 'true';
-          } // } else {
-          //     this.worksDays[index].reserved = false
-          // }
+      array.forEach(function (item) {
+        var index = 0;
+        var found = 0;
 
+        for (index = found; index < _this.worksDays.length; index++) {
+          if (item.from === _this.worksDays[index].time) {
+            _this.worksDays[index].reserved = true;
+            found = index;
+            return;
+          }
+
+          _this.worksDays[index].reserved = false;
         }
       });
-      this.filteredDays = this.ww;
+      this.filteredDays = this.worksDays;
     }
   }
 });
@@ -2197,6 +2153,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2206,7 +2185,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      picker: new Date().toISOString().substr(0, 10),
       barbers: [],
+      time: '',
+      radios: 'radio-1',
+      barber: '',
       wat: '',
       johnReservedDays: [],
       filipReservedDays: [],
@@ -2235,10 +2218,9 @@ __webpack_require__.r(__webpack_exports__);
     axios.get('/reserved-days-filip').then(function (response) {
       _this.filipReservedDays = response.data;
       _this.filipReservedDays.barber = 'Filip';
-    });
-    axios.get('/get-reserved-days').then(function (response) {
-      _this.reservedDays = response.data;
-    });
+    }); // axios.get('/get-reserved-days').then(response => {
+    //    this.reservedDays = response.data
+    // })
   },
   methods: {
     onChildClick: function onChildClick(dateUserWants) {
@@ -2256,23 +2238,32 @@ __webpack_require__.r(__webpack_exports__);
         name: this.name,
         lastName: this.lastName,
         phone: this.phone,
-        from: this.date,
-        email: this.email
+        from: this.time,
+        email: this.email,
+        day: this.picker,
+        barber: this.wat
       }).then(function (response) {
-        _this2.bool = false;
-        window.location.href = '/';
+        _this2.bool = false; // window.location.href = '/'
       });
     }
   },
   computed: {
-    barbersLooped: function barbersLooped() {
-      return this.wat;
+    barbe: function barbe() {
+      console.log(this.wat);
+
+      if (this.wat === 'Filip') {
+        this.reservedDays = this.filipReservedDays;
+      }
+
+      if (this.wat === 'John') {
+        this.reservedDays = this.johnReservedDays;
+      }
     },
     idk: function idk() {
       return this.bool;
     },
     formIsValid: function formIsValid() {
-      return this.name !== '' && this.lastName !== '' && this.phone !== '' && this.email !== '' && this.date !== '';
+      return this.name !== '' && this.lastName !== '' && this.phone !== '' && this.email !== '' && this.picker !== '' && this.time !== '';
     }
   }
 });
@@ -22243,13 +22234,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("v-date-picker", {
     staticClass: "mt-4",
-    model: {
-      value: _vm.date,
-      callback: function($$v) {
-        _vm.date = $$v
-      },
-      expression: "date"
-    }
+    attrs: { "v-model": _vm.picker }
   })
 }
 var staticRenderFns = []
@@ -22291,15 +22276,7 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c(
-        "v-col",
-        _vm._l(_vm.worksDays, function(day) {
-          return _c("v-row", { key: day.id }, [
-            _vm._v("\n                " + _vm._s(day) + "\n        ")
-          ])
-        }),
-        1
-      )
+      _c("v-col")
     ],
     1
   )
@@ -22512,12 +22489,7 @@ var render = function() {
                                       },
                                       expression: "wat"
                                     }
-                                  }),
-                                  _vm._v(
-                                    "\n                        " +
-                                      _vm._s(_vm.barbersLooped) +
-                                      "\n                     "
-                                  )
+                                  })
                                 ],
                                 1
                               )
@@ -22531,18 +22503,17 @@ var render = function() {
                             [
                               _c(
                                 "v-col",
-                                { attrs: { cols: "3", sm: "4", md: "2" } },
+                                { attrs: { cols: "3", sm: "3", md: "3" } },
                                 [
-                                  _c("date-picker"),
-                                  _vm._v(" "),
-                                  _c("picker", {
-                                    attrs: {
-                                      selectedBarber: _vm.barbersLooped,
-                                      filipReservedDays: _vm.filipReservedDays,
-                                      johnReservedDays: _vm.johnReservedDays,
-                                      reservedDays: _vm.reservedDays
-                                    },
-                                    on: { childToParent: _vm.onChildClick }
+                                  _c("v-date-picker", {
+                                    attrs: { color: "green lighten-1" },
+                                    model: {
+                                      value: _vm.picker,
+                                      callback: function($$v) {
+                                        _vm.picker = $$v
+                                      },
+                                      expression: "picker"
+                                    }
                                   })
                                 ],
                                 1
@@ -22551,6 +22522,58 @@ var render = function() {
                             1
                           ),
                           _vm._v(" "),
+                          _c(
+                            "v-row",
+                            { attrs: { justify: "center" } },
+                            [
+                              _c(
+                                "v-col",
+                                { attrs: { cols: "3", sm: "3", md: "3" } },
+                                _vm._l(_vm.reservedDays, function(day) {
+                                  return _c("v-row", { key: day.id }, [
+                                    _vm.picker == day.day
+                                      ? _c(
+                                          "div",
+                                          [
+                                            _c(
+                                              "v-radio-group",
+                                              {
+                                                attrs: { mandatory: false },
+                                                model: {
+                                                  value: _vm.time,
+                                                  callback: function($$v) {
+                                                    _vm.time = $$v
+                                                  },
+                                                  expression: "time"
+                                                }
+                                              },
+                                              [
+                                                _c("v-radio", {
+                                                  attrs: {
+                                                    color: "red",
+                                                    label: day.time,
+                                                    value: day.time
+                                                  }
+                                                })
+                                              ],
+                                              1
+                                            )
+                                          ],
+                                          1
+                                        )
+                                      : _vm._e()
+                                  ])
+                                }),
+                                1
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(
+                            "\n                     " +
+                              _vm._s(_vm.time) +
+                              "\n                     "
+                          ),
                           _c(
                             "v-row",
                             { attrs: { justify: "center" } },
@@ -22592,6 +22615,11 @@ var render = function() {
                           )
                         ],
                         1
+                      ),
+                      _vm._v(
+                        "\n               " +
+                          _vm._s(_vm.barbe) +
+                          "\n               "
                       )
                     ],
                     1
@@ -22599,6 +22627,35 @@ var render = function() {
                 ],
                 1
               )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-container",
+        { attrs: { fluid: "" } },
+        [
+          _c("p", [_vm._v(_vm._s(_vm.radios || "null"))]),
+          _vm._v(" "),
+          _c(
+            "v-radio-group",
+            {
+              attrs: { mandatory: false },
+              model: {
+                value: _vm.radios,
+                callback: function($$v) {
+                  _vm.radios = $$v
+                },
+                expression: "radios"
+              }
+            },
+            [
+              _c("v-radio", { attrs: { label: "Radio 1", value: "radio-1" } }),
+              _vm._v(" "),
+              _c("v-radio", { attrs: { label: "Radio 2", value: "radio-2" } })
             ],
             1
           )
@@ -75739,10 +75796,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuetify_lib_components_VApp__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuetify/lib/components/VApp */ "./node_modules/vuetify/lib/components/VApp/index.js");
 /* harmony import */ var vuetify_lib_components_VBtn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuetify/lib/components/VBtn */ "./node_modules/vuetify/lib/components/VBtn/index.js");
 /* harmony import */ var vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuetify/lib/components/VGrid */ "./node_modules/vuetify/lib/components/VGrid/index.js");
-/* harmony import */ var vuetify_lib_components_VForm__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuetify/lib/components/VForm */ "./node_modules/vuetify/lib/components/VForm/index.js");
-/* harmony import */ var vuetify_lib_components_VProgressCircular__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuetify/lib/components/VProgressCircular */ "./node_modules/vuetify/lib/components/VProgressCircular/index.js");
-/* harmony import */ var vuetify_lib_components_VSelect__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuetify/lib/components/VSelect */ "./node_modules/vuetify/lib/components/VSelect/index.js");
-/* harmony import */ var vuetify_lib_components_VTextField__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuetify/lib/components/VTextField */ "./node_modules/vuetify/lib/components/VTextField/index.js");
+/* harmony import */ var vuetify_lib_components_VDatePicker__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuetify/lib/components/VDatePicker */ "./node_modules/vuetify/lib/components/VDatePicker/index.js");
+/* harmony import */ var vuetify_lib_components_VForm__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vuetify/lib/components/VForm */ "./node_modules/vuetify/lib/components/VForm/index.js");
+/* harmony import */ var vuetify_lib_components_VProgressCircular__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vuetify/lib/components/VProgressCircular */ "./node_modules/vuetify/lib/components/VProgressCircular/index.js");
+/* harmony import */ var vuetify_lib_components_VRadioGroup__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vuetify/lib/components/VRadioGroup */ "./node_modules/vuetify/lib/components/VRadioGroup/index.js");
+/* harmony import */ var vuetify_lib_components_VSelect__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! vuetify/lib/components/VSelect */ "./node_modules/vuetify/lib/components/VSelect/index.js");
+/* harmony import */ var vuetify_lib_components_VTextField__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! vuetify/lib/components/VTextField */ "./node_modules/vuetify/lib/components/VTextField/index.js");
 
 
 
@@ -75772,7 +75831,10 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 
 
-_node_modules_vuetify_loader_lib_runtime_installComponents_js__WEBPACK_IMPORTED_MODULE_3___default()(component, {VApp: vuetify_lib_components_VApp__WEBPACK_IMPORTED_MODULE_4__["VApp"],VBtn: vuetify_lib_components_VBtn__WEBPACK_IMPORTED_MODULE_5__["VBtn"],VCol: vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_6__["VCol"],VContainer: vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_6__["VContainer"],VForm: vuetify_lib_components_VForm__WEBPACK_IMPORTED_MODULE_7__["VForm"],VProgressCircular: vuetify_lib_components_VProgressCircular__WEBPACK_IMPORTED_MODULE_8__["VProgressCircular"],VRow: vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_6__["VRow"],VSelect: vuetify_lib_components_VSelect__WEBPACK_IMPORTED_MODULE_9__["VSelect"],VTextField: vuetify_lib_components_VTextField__WEBPACK_IMPORTED_MODULE_10__["VTextField"]})
+
+
+
+_node_modules_vuetify_loader_lib_runtime_installComponents_js__WEBPACK_IMPORTED_MODULE_3___default()(component, {VApp: vuetify_lib_components_VApp__WEBPACK_IMPORTED_MODULE_4__["VApp"],VBtn: vuetify_lib_components_VBtn__WEBPACK_IMPORTED_MODULE_5__["VBtn"],VCol: vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_6__["VCol"],VContainer: vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_6__["VContainer"],VDatePicker: vuetify_lib_components_VDatePicker__WEBPACK_IMPORTED_MODULE_7__["VDatePicker"],VForm: vuetify_lib_components_VForm__WEBPACK_IMPORTED_MODULE_8__["VForm"],VProgressCircular: vuetify_lib_components_VProgressCircular__WEBPACK_IMPORTED_MODULE_9__["VProgressCircular"],VRadio: vuetify_lib_components_VRadioGroup__WEBPACK_IMPORTED_MODULE_10__["VRadio"],VRadioGroup: vuetify_lib_components_VRadioGroup__WEBPACK_IMPORTED_MODULE_10__["VRadioGroup"],VRow: vuetify_lib_components_VGrid__WEBPACK_IMPORTED_MODULE_6__["VRow"],VSelect: vuetify_lib_components_VSelect__WEBPACK_IMPORTED_MODULE_11__["VSelect"],VTextField: vuetify_lib_components_VTextField__WEBPACK_IMPORTED_MODULE_12__["VTextField"]})
 
 
 /* hot reload */
@@ -75871,7 +75933,7 @@ var opts = {};
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Barbershop\resources\js\reservation\app.js */"./resources/js/reservation/app.js");
+module.exports = __webpack_require__(/*! /home/filip/Programming/barber/resources/js/reservation/app.js */"./resources/js/reservation/app.js");
 
 
 /***/ })

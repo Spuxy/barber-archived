@@ -60,26 +60,49 @@
                                    label="Outlined style"
                                    outlined
                            ></v-select>
-                           {{barbersLooped}}
                         </v-col>
                      </v-row>
                      <v-row justify="center">
-                        <v-col cols="3" sm="4" md="2">
-                           <date-picker></date-picker>
-                           <picker :selectedBarber="barbersLooped" :filipReservedDays="filipReservedDays" :johnReservedDays="johnReservedDays" :reservedDays="reservedDays" v-on:childToParent="onChildClick"></picker>
+                        <v-col cols="3" sm="3" md="3">
+                           <v-date-picker v-model="picker" color="green lighten-1"></v-date-picker>
+<!--                           <picker :selectedBarber="barbersLooped" :filipReservedDays="filipReservedDays" :johnReservedDays="johnReservedDays" :reservedDays="reservedDays" v-on:childToParent="onChildClick"></picker>-->
                         </v-col>
                      </v-row>
+                     <v-row justify="center">
+                        <v-col cols="3" sm="3" md="3">
+                           <v-row v-for="day in reservedDays" :key="day.id">
+                              <div v-if="picker == day.day">
+
+                                 <v-radio-group v-model="time" :mandatory="false">
+                                    <v-radio color="red" :label="day.time" :value="day.time"></v-radio>
+                                 </v-radio-group>
+<!--                                 <input v-model="time" type="radio" :value="day.time">{{day.time}}-->
+                              </div>
+                           </v-row>
+                        </v-col>
+                     </v-row>
+                     {{time}}
                      <v-row justify="center">
                         <v-col cols="7" sm="5" md="1">
                            <v-btn class="cyan" type="submit" :disabled="!formIsValid">Reserve my haircut !  <v-progress-circular :indeterminate="idk" v-show="this.bool!==false"></v-progress-circular></v-btn>
                         </v-col>
                      </v-row>
                   </v-container>
+               {{barbe}}
                </v-form>
             </v-col>
          </v-row>
+
+      </v-container>
+      <v-container fluid>
+         <p>{{ radios || 'null' }}</p>
+         <v-radio-group v-model="radios" :mandatory="false">
+            <v-radio label="Radio 1" value="radio-1"></v-radio>
+            <v-radio label="Radio 2" value="radio-2"></v-radio>
+         </v-radio-group>
       </v-container>
    </v-app>
+
 </template>
 
 <script>
@@ -90,10 +113,15 @@
           'picker': picker,
           'datePicker': datePicker
        },
+
        data(){
           return {
+             picker: new Date().toISOString().substr(0, 10),
                barbers: [],
-             wat:'',
+               time:'',
+             radios: 'radio-1',
+             barber:'',
+               wat:'',
                johnReservedDays:[],
                filipReservedDays:[],
                date: '',
@@ -120,9 +148,9 @@
               this.filipReservedDays = response.data
               this.filipReservedDays.barber = 'Filip'
            })
-              axios.get('/get-reserved-days').then(response => {
-                 this.reservedDays = response.data
-              })
+              // axios.get('/get-reserved-days').then(response => {
+              //    this.reservedDays = response.data
+              // })
 
         },
        methods: {
@@ -138,25 +166,33 @@
                 name: this.name,
                 lastName: this.lastName,
                 phone: this.phone,
-                from: this.date,
-                email: this.email
+                from: this.time,
+                email: this.email,
+                day: this.picker,
+                barber: this.wat
              })
                      .then(response =>{
                         this.bool = false
-                        window.location.href = '/'
+                        // window.location.href = '/'
                      })
           }
        },
        computed:{
-            barbersLooped(){
-               return this.wat
-            },
-            idk(){
-               return this.bool
-            },
-            formIsValid(){
-               return this.name !== '' && this.lastName !== '' && this.phone !== '' && this.email !== '' && this.date !== ''
-            }
+          barbe(){
+             console.log(this.wat)
+             if (this.wat === 'Filip') {
+                this.reservedDays = this.filipReservedDays
+             }
+             if (this.wat === 'John') {
+                this.reservedDays = this.johnReservedDays
+             }
+          },
+          idk() {
+             return this.bool
+          },
+          formIsValid() {
+             return this.name !== '' && this.lastName !== '' && this.phone !== '' && this.email !== '' && this.picker !== '' && this.time !== ''
+          }
        }
     }
 </script>

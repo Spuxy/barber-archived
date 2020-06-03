@@ -6,9 +6,6 @@
                            v-model="picker"
                            :allowed-minutes="allowedMinutes" @click:minute="emitToParent"></v-time-picker>
         <v-col>
-            <v-row v-for="day in worksDays" :key="day.id">
-                    {{day}}
-            </v-row>
         </v-col>
     </v-row>
 </template>
@@ -52,25 +49,6 @@
                     {time:'15:00:00', reserved:false},
                     {time:'15:30:00', reserved:false},
                     ],
-                ww:
-                    [
-                    {time:'08:00:00', reserved:false},
-                    {time:'08:30:00', reserved:false},
-                    {time:'09:00:00', reserved:false},
-                    {time:'09:30:00', reserved:false},
-                    {time:'10:00:00', reserved:false},
-                    {time:'10:30:00', reserved:false},
-                    {time:'11:00:00', reserved:false},
-                    {time:'11:30:00', reserved:false},
-                    {time:'12:00:00', reserved:false},
-                    {time:'12:30:00', reserved:false},
-                    {time:'13:00:00', reserved:false},
-                    {time:'13:30:00', reserved:false},
-                    {time:'14:00:00', reserved:false},
-                    {time:'14:30:00', reserved:false},
-                    {time:'15:00:00', reserved:false},
-                    {time:'15:30:00', reserved:false},
-                    ],
             }
         },
         methods:{
@@ -89,17 +67,25 @@
                 } else {
                     array = this.filipReservedDays
                 }
+                array.forEach((item) => {
 
-                array.forEach((item,index) => {
-                     for (index = 0; index < this.worksDays.length; index++){
+                    var index = 0
+                    var found = 0;
+                     for (index = found; index < this.worksDays.length; index++){
                          if (item.from === this.worksDays[index].time){
-                             this.worksDays[index].reserved = 'true'}
-                         // } else {
-                         //     this.worksDays[index].reserved = false
-                         // }
-                     }
+
+                             this.worksDays[index].reserved = true
+
+                             found = index;
+                             return
+                         }
+
+                             this.worksDays[index].reserved = false
+
+
+                    }
                  })
-                this.filteredDays = this.ww
+                this.filteredDays = this.worksDays
             }
         }
     }
