@@ -1,11 +1,11 @@
 @extends('welcome')
 @section('content')
     <div id="app">
-        @include('navbar.navbar')
         @include('parts.svglogo')
-        <div class="bg">
+        <div class="bg" id="top">
 
         </div>
+        <div v-waypoint="{ active: true, callback: onWaypoint }"></div>
         <div class="container">
             <section class="columns" id="aboutus">
                 <div class="column first ">
@@ -70,6 +70,18 @@
                                 od 789 KČ
                             </div>
                         </div>
+                        <v-btn
+                                v-show="fab"
+                                fab
+                                dark
+                                fixed
+                                bottom
+                                right
+                                color="primary"
+                                @click="scrollUp()"
+                        >
+                            <v-icon>mdi-arrow-up</v-icon>
+                        </v-btn>
                         <div class="columns">
                             <div class="column">
                                 Barvení/tónování

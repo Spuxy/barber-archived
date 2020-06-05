@@ -1,8 +1,12 @@
 <template>
-    <v-date-picker
-            :v-model="picker"
-            class="mt-4"
-    ></v-date-picker>
+    <v-row>
+        <v-col align="center">
+            <v-date-picker
+                    :v-model="picker"
+                    color="red"
+            ></v-date-picker>
+        </v-col>
+    </v-row>
 
 </template>
 
