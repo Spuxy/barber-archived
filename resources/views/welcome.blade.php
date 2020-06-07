@@ -9,9 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
+<div id="app">
+    @include('navbar.navbar')
+</div>
 @yield('content')
 
 @include('parts.footer')
+
 <script src="js/app.js"></script>
 </body>
 </html>

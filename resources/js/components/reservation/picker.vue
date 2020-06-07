@@ -1,15 +1,14 @@
 <template>
     <v-row>
         {{reservedDaysLoop}}
-        <v-time-picker     class="mt-3"
-                           scrollable
-                           v-model="picker"
-                           :allowed-minutes="allowedMinutes" @click:minute="emitToParent"></v-time-picker>
         <v-col>
-            <v-row v-for="day in worksDays" :key="day.id">
-                    {{day}}
+            <v-row v-for="day in worksDays" :key="day.id" v-show="!day.reserved" align="center" color="text-danger">
+                <v-radio-group v-model="time" :mandatory="false" row style="margin:0">
+                    <v-radio color="white" :label="day.time" :value="day.time"></v-radio>
+                </v-radio-group>
             </v-row>
         </v-col>
+        {{numChange}}
     </v-row>
 </template>
 
@@ -18,21 +17,11 @@
         name: "picker",
         props: [
             'reservedDays',
-            'selectedBarber',
-            'johnReservedDays',
-            'filipReservedDays',
+            'date',
         ],
         data() {
             return{
-                allowedTimes: {
-                    hours: ["13:00"],
-                    minutes: []
-                },
-                picker:'12:00',
-                reservedDaysFrom: [],
-                workday:[],
-                test:[],
-                filteredDays:[],
+                time:'',
                 worksDays:
                     [
                     {time:'08:00:00', reserved:false},
@@ -52,55 +41,32 @@
                     {time:'15:00:00', reserved:false},
                     {time:'15:30:00', reserved:false},
                     ],
-                ww:
-                    [
-                    {time:'08:00:00', reserved:false},
-                    {time:'08:30:00', reserved:false},
-                    {time:'09:00:00', reserved:false},
-                    {time:'09:30:00', reserved:false},
-                    {time:'10:00:00', reserved:false},
-                    {time:'10:30:00', reserved:false},
-                    {time:'11:00:00', reserved:false},
-                    {time:'11:30:00', reserved:false},
-                    {time:'12:00:00', reserved:false},
-                    {time:'12:30:00', reserved:false},
-                    {time:'13:00:00', reserved:false},
-                    {time:'13:30:00', reserved:false},
-                    {time:'14:00:00', reserved:false},
-                    {time:'14:30:00', reserved:false},
-                    {time:'15:00:00', reserved:false},
-                    {time:'15:30:00', reserved:false},
-                    ],
-            }
-        },
-        methods:{
-            allowedMinutes: m => m % 30 === 0,
-            emitToParent (event) {
-                this.$emit('childToParent', this.picker)
             }
         },
         computed:{
+            numChange(){
+                this.$emit('onNumChange', this.time);
+            },
             reservedDaysLoop(){
-
-                //celou dobu kvuli druhe podmince
-                var array
-                if (this.selectedBarber === this.johnReservedDays.barber){
-                    array = this.johnReservedDays
-                } else {
-                    array = this.filipReservedDays
-                }
-
-                array.forEach((item,index) => {
-                     for (index = 0; index < this.worksDays.length; index++){
-                         if (item.from === this.worksDays[index].time){
-                             this.worksDays[index].reserved = 'true'}
-                         // } else {
-                         //     this.worksDays[index].reserved = false
-                         // }
-                     }
-                 })
-                this.filteredDays = this.ww
-            }
+                console.log(this.reservedDays)
+                this.worksDays.forEach((item,po) => {
+                    for (var index = 0; index < this.reservedDays.length ; index++){
+                        if (this.date == this.reservedDays[index].day){
+                            if (item.time == this.reservedDays[index].from){
+                                this.worksDays[po].reserved = true
+                                break;
+                            }
+                            this.worksDays[po].reserved = false
+                        }
+                        this.worksDays[po].reserved = false
+                    }
+                })
+            },
         }
     }
 </script>
+<style>
+    .v-label {
+        color: red;
+    }
+</style>
