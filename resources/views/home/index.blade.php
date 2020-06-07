@@ -2,6 +2,7 @@
 @section('content')
     <div id="app">
         @include('parts.svglogo')
+        <FlashMessage :position="'right right'"></FlashMessage>
         <div class="bg" id="top">
 
         </div>

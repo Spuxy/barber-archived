@@ -4,14 +4,28 @@ import anime from 'animejs/lib/anime.es.js';
 import vuetify from "../plugins/vuetify";
 import Vuetify from 'vuetify';
 import VueWaypoint from "vue-waypoint";
+import FlashMessage from '@smartweb/vue-flash-message';
+
 Vue.use(Vuetify);
 Vue.use(VueWaypoint)
+Vue.use(FlashMessage);
 const app = new Vue({
     el: '#app',
     vuetify,
     data: () => ({
         fab: false,
+        gg:'ss'
     }),
+    computed:{
+      success(){
+          if (window.location.hash == '#success_hair'){
+              this.flashMessage.success({
+                  title: 'Success Message Title',
+                  message: 'Hoorah, it is my fist npm package and it works!'
+              });
+          }
+      }
+    },
     methods: {
         onWaypoint ({ going, direction }) {
             if (going === this.$waypointMap.GOING_IN) {
@@ -41,7 +55,6 @@ const app = new Vue({
             console.log(target)
         },
         showMenu(){
-            console.log('click')
             var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
             if ($navbarBurgers.length > 0) {
                 $navbarBurgers.forEach(function ($el) {

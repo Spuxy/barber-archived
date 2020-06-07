@@ -2,7 +2,7 @@
     <v-row>
         <v-col align="center">
             <v-date-picker
-                    :v-model="picker"
+                    @click="picker"
                     color="red"
             ></v-date-picker>
         </v-col>
@@ -19,7 +19,7 @@
             }
         },
         mounted(){
-                this.date
+
         }
     }
 </script>

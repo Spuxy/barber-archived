@@ -30,6 +30,7 @@
         "vue-waypoint": "^3.4.1"
     },
     "dependencies": {
+        "@smartweb/vue-flash-message": "^0.6.4",
         "animate.css": "^3.7.2",
         "animejs": "^3.2.0",
         "in-viewport": "^3.6.0",

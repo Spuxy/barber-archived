@@ -27,6 +27,7 @@
                      <v-row justify="center">
                         <v-col cols="12" sm="6" md="3">
                            <v-text-field
+                                   :error="errorName"
                                    name="name"
                                    color="white"
                                    label="Name"
@@ -39,6 +40,7 @@
                      <v-row justify="center">
                         <v-col cols="12" sm="6" md="3">
                            <v-text-field
+                                   :error="errorLastName"
                                    name="lastName"
                                    color="white"
                                    label="Lastname"
@@ -51,6 +53,7 @@
                      <v-row justify="center">
                         <v-col cols="12" sm="6" md="3">
                            <v-text-field
+                                   :error="errorPhone"
                                    name="phone"
                                    label="Phone"
                                    color="white"
@@ -63,6 +66,7 @@
                      <v-row justify="center">
                         <v-col cols="12" sm="6" md="3">
                            <v-text-field
+                                   :error="errorEmail"
                                    name="email"
                                    label="E-mail"
                                    color="white"
@@ -77,8 +81,9 @@
                         <v-col class="d-flex" cols="12" sm="6" md="3">
                            <v-select
                                    :items="barbers"
+                                   :error="errors.barber_id"
                                    v-model="nameOfBarber"
-                                   label="Outlined style"
+                                   label="Barbers"
                                    outlined
                            ></v-select>
                         </v-col>
@@ -87,7 +92,7 @@
                      <v-row justify="center" id="myFandy">
                         <v-col md="4"></v-col>
                         <v-col md="4" align="center">
-                           <v-date-picker v-model="picker" color="red lighten-1"></v-date-picker>
+                           <v-date-picker v-model="picker" :show-current=false color="red lighten-1"></v-date-picker>
                         </v-col>
                         <v-col md="4">
                         </v-col>
@@ -144,6 +149,7 @@
                lastName: '',
                phone: '',
                email: '',
+             errors: [],
              working: false,
                reservedDays: [],
           }
@@ -202,10 +208,11 @@
              })
           },
           send(){
-             if (!this.formIsValid){
-                return
-             }
+             // if (!this.formIsValid){
+             //    return
+             // }
              this.working = true
+             console.log(this.email)
              axios.post('/reservation/reserveDate',{
                 name: this.name,
                 lastName: this.lastName,
@@ -217,11 +224,45 @@
              })
                      .then(response =>{
                         this.working = false
-                        window.location.href = '/'
-                     })
+                        window.location.href = '/#success_hair'
+                     }).catch(error => {
+                  if (error.response && error.response.status == 422) {
+                     this.working = false
+                     this.errors = []
+                   let errorsFields = error.response.data.errors
+                   Object.keys(errorsFields).forEach(key => {
+                      this.errors[key] = errorsFields[key][0]
+                   })
+                }
+                  jump(document.getElementById('top'))
+             })
           }
        },
        computed:{
+          errorName(){
+             if (this.errors.name && !this.name){
+                return true
+             }
+             return false
+          },
+          errorLastName(){
+             if (this.errors.lastName && !this.lastName){
+                return true
+             }
+             return false
+          },
+          errorPhone(){
+             if (this.errors.phone && !this.phone){
+                return true
+             }
+             return false
+          },
+          errorEmail(){
+            if (this.errors.email && !this.email){
+               return true
+            }
+            return false
+          },
           reservedDayOfBarber(){
              switch(this.nameOfBarber) {
                 case 'Filip':
@@ -236,7 +277,8 @@
              return this.working
           },
           formIsValid() {
-             return this.name !== '' && this.lastName !== '' && this.phone !== '' && this.email !== '' && this.picker !== '' && this.time !== ''
+             return true
+             // return this.name !== '' && this.lastName !== '' && this.phone !== '' && this.email !== '' && this.picker !== '' && this.time !== ''
           }
        }
     }

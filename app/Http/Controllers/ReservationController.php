@@ -8,7 +8,15 @@ use Illuminate\Http\Request;
 class ReservationController extends Controller
 {
 	public function reserveDate(Request $request){
-//		Day::where('time', $request->time)->where('day', $request->day)->where('barber_id',$request->barber)->update(['reserved'=>1]);
+		$request->validate([
+			'name'=>'required',
+			'lastName'=>'required',
+			'phone'=>'required',
+			'email'=>'required',
+			'from'=>'required',
+			'day'=>'required',
+			'barber_id'=>'required'
+		]);
 		$request->offsetUnset('barber');
 		Reservation::create($request->all());
 		return (['message'=>'success']);
