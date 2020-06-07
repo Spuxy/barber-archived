@@ -1,9 +1,6 @@
 @extends('welcome')
 @section('content')
-    <div class="p-b-xl">
-        @include('navbar.navbar')
-    </div>
-   <div class="container p-t-xl">
+   <div class="container m-t-xl">
        <div id="reservation">
            <div>
                <reservation-form></reservation-form>

@@ -10,7 +10,7 @@ class BarberController extends Controller
 	public function getBarbers()
 	{
 //		dd(Barber::all()->get('firstname'));
-		$barbers = Barber::all('firstname');
+		$barbers = Barber::all('firstname','id');
 		return $barbers;
 	}
 }

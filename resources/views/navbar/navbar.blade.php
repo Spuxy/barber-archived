@@ -5,7 +5,7 @@
                     Barber
             </div>
         </a>
-        <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
+        <div class="navbar-burger burger" data-target="navbarExampleTransparentExample" @click="showMenu()">
             <span></span>
             <span></span>
             <span></span>
