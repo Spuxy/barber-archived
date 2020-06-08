@@ -4,23 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Reservation;
 use Illuminate\Http\Request;
+use App\Http\Forms\ReservationPostForm;
 
 class ReservationController extends Controller
 {
-
-	/**
-	 * Fields of reservation form for validate request
-	 * @var array[]
-	 */
-	protected $fields = [
-		'name'      => 'required',
-		'lastName'  => 'required',
-		'phone'     => 'required',
-		'email'     => 'required',
-		'from'      => 'required',
-		'day'       => 'required',
-		'barber_id' => 'required'
-	];
 
 	/**
 	 * Function for reservation form
@@ -28,8 +15,9 @@ class ReservationController extends Controller
 	 * @return string[]
 	 */
 	public function reserveDate(Request $request){
-		$request->validate($this->fields);
-		Reservation::create($request->all());
+		$form = new ReservationPostForm($request);
+		$form->save();
+
 		return (['message'=>'success']);
 	}
 
