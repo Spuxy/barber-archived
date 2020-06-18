@@ -17,7 +17,6 @@ class ContactController extends Controller {
 	public function store(Request $request) {
 		$validatedData = $this->isValidRequest($request);
 //		$jobs = new PublishedContactForm();
-//		dd($jobs->handle());
 		Contact::hasBeenSent($validatedData);
 	}
 

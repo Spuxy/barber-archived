@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use function foo\func;
+use App\Fascade\ParserLibrary;
 
-use App\barber;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
