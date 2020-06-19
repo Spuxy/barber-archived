@@ -12,13 +12,13 @@ class ReservationPostForm extends Form {
 	 * @var array[]
 	 */
 	protected $fields = [
-		'name'      => 'required',
-		'lastName'  => 'required',
+		'name'      => 'required|max:25',
+		'lastName'  => 'required|max:25',
 		'phone'     => 'required',
-		'email'     => 'required',
+		'email'     => 'required|email',
 		'from'      => 'required',
-		'day'       => 'required',
-		'barber_id' => 'required'
+		'day'       => 'required|date',
+		'barber' => 'required'
 	];
 
 	public function process() {

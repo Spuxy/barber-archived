@@ -2,6 +2,7 @@
 @section('content')
    <div class="container m-t-xl">
        <div id="reservation">
+           <Flash-Message :position="'right bottom'"></Flash-Message>
            <div>
                <reservation-form></reservation-form>
            </div>

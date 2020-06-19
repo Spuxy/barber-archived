@@ -15,8 +15,8 @@ class CreateBarbersTable extends Migration
     {
         Schema::create('barbers', function (Blueprint $table) {
             $table->id();
-	        $table->string('firstname');
-	        $table->string('lastname');
+	        $table->string('name');
+	        $table->string('lastName');
 	        $table->timestamps();
         });
     }

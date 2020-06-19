@@ -8,10 +8,16 @@ class Phone extends FormObject {
 
 	private $number;
 
+	/**
+	 * Phone constructor. Do logic
+	 * maybe requirment to config
+	 * @param $number
+	 * @throws Exception
+	 */
 	public function __construct($number) {
 
 		if ( $number < 6 ) {
-			throw new Exception('Number is too short');
+			throw new Exception('Number is too short'.$number);
 		}
 
 		if ( $number === 'string' ) {

@@ -1,12 +1,21 @@
 @extends('welcome')
 @section('content')
-    <div id="app">
+<div id="app">
         @include('parts.svglogo')
-        <FlashMessage :position="'right right'"></FlashMessage>
+        <Flash-Message></Flash-Message>
         <div class="bg" id="top">
-
         </div>
         <div v-waypoint="{ active: true, callback: onWaypoint }"></div>
+        @if(session()->has('reserved_day'))
+            <div class="column has-text-weight-bold has-background-success" id="session_reserve">
+                <div class="column has-text-centered">
+                    {{session()->get('reserved_day')}}
+                </div>
+            </div>
+        @endif
+        <button @click="vueF">
+            sddsad
+        </button>
         <div class="container">
             <section class="columns" id="aboutus">
                 <div class="column first ">
@@ -130,5 +139,11 @@
                 </div>
             </section>
         </div>
-    </div>
+</div>
 @endsection
+<script>
+    import DatePicker from "../../js/components/reservation/date-picker";
+    export default {
+        components: {DatePicker}
+    }
+</script>

@@ -17,8 +17,9 @@ class CreateNewsTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('body');
-            $table->timestamps();
-            $table->timestamp('published_at')->nullable();
+            $table->unsignedBigInteger('photo_id');
+	        $table->timestamp('published_at')->nullable();
+	        $table->timestamps();
         });
     }
 

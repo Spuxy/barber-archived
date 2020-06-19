@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Fascade\ParserLibrary;
+use function foo\func;
+use App\Barber;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,15 +16,19 @@ use App\Fascade\ParserLibrary;
 |
 */
 
-Route::get('/', function () {
-    return view('home.index');
+Route::get('/galery', function(){
+	$wtf = range(1,1000000000);
+	dd($wtf);
+	$barbers = Barber::all();
+	return view('galery.index', compact('barbers'));
 });
-Route::get('/reservation', function () {
-    return view('reservation.index');
-});
+Route::get('/contact', 'ContactController@index');
+Route::post('contact', 'ContactController@store');
+Route::get('/', 'HomeController@index');
+Route::get('/reservation', 'ReservationController@create');
+Route::post('/reservation/reserveDate', 'ReservationController@reserveDate');
+Route::get('/get-barbers', 'BarberController@getBarbers');
 
-Route::post('/reservation/reserveDate','ReservationController@reserveDate');
-Route::get('/reserved-days-filip','ReservationController@getFilipReservedDays');
-Route::get('/reserved-days-john','ReservationController@getJohnReservedDays');
-Route::get('/get-reserved-days','ReservationController@getReservedDays');
-Route::get('/get-barbers','BarberController@getBarbers');
+
+
+Route::get('/home', 'HomeController@index')->name('home');

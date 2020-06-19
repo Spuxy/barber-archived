@@ -12,7 +12,7 @@
 <div id="app">
     @include('navbar.navbar')
 </div>
-@yield('content')
+    @yield('content')
 
 @include('parts.footer')
 
