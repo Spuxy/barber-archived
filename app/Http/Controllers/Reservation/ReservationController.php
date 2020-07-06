@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Reservation;
 
 use App\Reservation;
 use Illuminate\Http\Request;
@@ -8,11 +8,16 @@ use Illuminate\Http\Request;
 use App\Http\Forms\ReservationPostForm;
 
 use App\Day;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TestNotify;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 
 
 class ReservationController extends Controller
 {
-
+	use Notifiable;
 	/**
 	 * Function for reservation form
 	 */
@@ -20,10 +25,11 @@ class ReservationController extends Controller
 		return view('reservation.index');
 	}
 
-	public function reserveDate(Request $request){
+	public function store(Request $request){
 		$form = new ReservationPostForm($request);
 		$form->save();
-		session()->flash('reserved_day', 'Reservation was successful!');
+//		Log::info($form);
+//		$form->notify(new TestNotify($request));
 		return view('home.index');
 	}
 

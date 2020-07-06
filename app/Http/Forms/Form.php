@@ -27,8 +27,7 @@ abstract class Form {
 
 	public function save() {
 		if ($this->isValid()){
-			$this->process();
-			return true;
+			return $this->process();
 		}
 		return false;
 	}

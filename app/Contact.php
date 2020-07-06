@@ -10,7 +10,6 @@ class Contact extends Model
     protected $guarded = [];
 
 	public static function hasBeenSent($attributes) {
-		$ask = static::create($attributes);
-        event(new CustomerHasAsked($ask));
+		return static::create($attributes);
 	}
 }

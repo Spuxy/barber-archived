@@ -10,7 +10,7 @@ class CustomerHasAsked
     use SerializesModels;
 
 	/**
-	 * @var Contact
+	 * @var $ask
 	 */
 	public $ask;
 

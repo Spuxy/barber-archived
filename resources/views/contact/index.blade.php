@@ -1,5 +1,5 @@
 <h1>Contact page</h1>
-{!! Form::open(['url' => 'contact', 'method' => 'POST']) !!}
+{!! Form::open(['url' => '/contact', 'method' => 'POST']) !!}
     {{  Form::token()}}
     <div class="columns">
         <div class="column">

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckNumber;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -30,8 +31,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
 
+	    Route::pattern('id', '[0-9]+');
         parent::boot();
     }
 

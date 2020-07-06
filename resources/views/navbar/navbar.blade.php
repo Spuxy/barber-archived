@@ -29,6 +29,11 @@
             <a href="/reservation" class="navbar-item {{Request::is('contact') ? 'has-text-danger' : 'has-text-black'}}">
                 Reservation
             </a>
+            @can('upload-photo')
+            <a href="/photo/create" class="navbar-item {{Request::is('photo/create') ? 'has-text-danger' : 'has-text-black'}}">
+                Photo upload
+            </a>
+            @endcan
 {{--            <div class="navbar-item has-dropdown is-hoverable">--}}
 {{--                <a class="navbar-link" href="https://bulma.io/documentation/overview/start/">--}}
 {{--                    Docs--}}

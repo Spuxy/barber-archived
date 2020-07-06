@@ -10,10 +10,10 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ReservedDate
+class ReservedDate implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
+	public $foo = 'bar';
     /**
      * Create a new event instance.
      *
@@ -31,6 +31,6 @@ class ReservedDate
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new Channel('orders');
     }
 }

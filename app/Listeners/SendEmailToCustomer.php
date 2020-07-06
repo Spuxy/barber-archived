@@ -3,14 +3,15 @@
 namespace App\Listeners;
 
 use App\Events\CustomerHasAsked;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CustomerEmailer;
 
 class SendEmailToCustomer
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
+
+
+
     public function __construct()
     {
         //
@@ -24,6 +25,6 @@ class SendEmailToCustomer
      */
     public function handle(CustomerHasAsked $event)
     {
-        var_dump('sending a welcom email to'. $event->ask->lastName);
+	    Mail::to($event->ask->email)->send(new CustomerEmailer($event->ask->firstName, $event->ask->lastName));
     }
 }

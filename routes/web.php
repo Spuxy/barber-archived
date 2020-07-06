@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Fascade\ParserLibrary;
-use function foo\func;
-use App\Barber;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,19 +14,32 @@ use App\Barber;
 |
 */
 
-Route::get('/galery', function(){
-	$wtf = range(1,1000000000);
-	dd($wtf);
-	$barbers = Barber::all();
-	return view('galery.index', compact('barbers'));
+// Global pattern in RSP
+
+Route::group(['name'=>'home'],function(){
+	Route::get('/home','HomeController@index')->name('index');
+	Route::get('/','HomeController@index')->name('index');
 });
-Route::get('/contact', 'ContactController@index');
-Route::post('contact', 'ContactController@store');
-Route::get('/', 'HomeController@index');
-Route::get('/reservation', 'ReservationController@create');
-Route::post('/reservation/reserveDate', 'ReservationController@reserveDate');
-Route::get('/get-barbers', 'BarberController@getBarbers');
 
+Route::group(['namespace'=>'Contact','prefix'=>'contact','name'=>'contact'],function(){
+	Route::get('/', 'ContactController@index')->name('show');
+	Route::post('/', 'ContactController@store')->name('store');
+});
 
+Route::group(['namespace' => 'Reservation', 'prefix'=>'reservation','name'=>'reservation'],function(){
+	Route::get('/', 'ReservationController@create')->name('create')->middleware('throttle:90,1');
+	Route::post('store', 'ReservationController@store')->name('store');
+});
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['namespace'=>'Barber','prefix'=>'get-barbers','name'=>'barber'],function(){
+	Route::get('/', 'BarberController@index')->name('index');
+	Route::get('/{id?}', 'BarberController@show')->name('show');
+});
+
+Route::group(['namespace' => 'Photo', 'prefix' => 'photo', 'name' => 'photo'], function() {
+	Route::get('/create', 'PhotoController@create')->name('create');
+	Route::get('/', 'PhotoController@index')->name('index');
+	Route::post('/', 'PhotoController@store')->name('store');
+});
+
+Auth::routes();

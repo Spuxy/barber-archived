@@ -1,3 +1,4 @@
+<script src="../../app.js"></script>
 <template>
     <v-app id="inspire">
         <v-btn
@@ -213,7 +214,7 @@
                 }
                 this.working = true
                 console.log(this.email)
-                axios.post('/reservation/reserveDate', {
+                axios.post('/reservation/store', {
                     name: this.name,
                     lastName: this.lastName,
                     phone: this.phone,
