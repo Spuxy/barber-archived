@@ -1,5 +1,5 @@
-@extends('welcome')
-@section('content')
+
+
    <div class="container m-t-xl">
        <div id="reservation">
            <div>
@@ -11,4 +11,4 @@
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="//cdn.timekit.io/booking-js/v2/booking.min.js" defer></script>
-@endsection
+

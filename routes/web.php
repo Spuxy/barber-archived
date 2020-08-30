@@ -21,7 +21,9 @@ Route::get('/', function () {
 Route::get('/reservation', function () {
     return view('reservation.index');
 });
-
+Route::get('wtf', function(){
+    return 'mrdko';
+});
 Route::post('/reservation/reserveDate','ReservationController@reserveDate');
 Route::get('/reserved-days-filip','ReservationController@getFilipReservedDays');
 Route::get('/reserved-days-john','ReservationController@getJohnReservedDays');

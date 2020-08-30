@@ -19,6 +19,8 @@ mix.webpackConfig(webpackConfig)
  */
 
 mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css')
+   .sass('resources/sass/showcase.scss', 'public/css')
    .sass('resources/sass/spacing.scss', 'public/css')
     .js('resources/js/reservation/app.js', 'public/js/reservation')
+    .js('resources/js/showcase.js', 'public/js')
+

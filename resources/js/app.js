@@ -9,12 +9,17 @@ import FlashMessage from '@smartweb/vue-flash-message';
 Vue.use(Vuetify);
 Vue.use(VueWaypoint)
 Vue.use(FlashMessage);
+Vue.use(jump);
 const app = new Vue({
     el: '#app',
     vuetify,
     data: () => ({
         fab: false,
-        gg:'ss'
+        intersectionOptions: {
+            root: null,
+            rootMargin: '0px 0px 0px 0px',
+            threshold: [0, 1] // [0.25, 0.75]
+          }
     }),
     computed:{
       success(){
@@ -40,20 +45,24 @@ const app = new Vue({
                 this.fab = true
             }
         },
+
         onScroll (e) {
             if (typeof window === 'undefined') return
             const top = window.pageYOffset ||   e.target.scrollTop || 0
             this.fab = top > 20
         },
+
         toTop () {
             this.$vuetify.goTo(0)
         },
+
         scrollUp(){
             console.log('mrd')
             const target = document.getElementById('top')
             jump(target)
             console.log(target)
         },
+
         showMenu(){
             var $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
             if ($navbarBurgers.length > 0) {
@@ -65,30 +74,11 @@ const app = new Vue({
                 });
             }
         },
-        pricingScroll(){
-           const target = document.getElementById('pricing')
-            if (! target){
-                window.location = '/#pricing';
-            }
+        jumpFromMenu(target) {
+            console.log(target)
             jump(target)
-            console.log('funguje')
-        },
-        aboutScroll(){
-           const target = document.getElementById('aboutus')
-            if (! target){
-                window.location = '/#pricing';
-            }
-            jump(target)
-            console.log('funguje')
-        },
-        hoursScroll(){
-            const target = document.getElementById('openHours')
-            if (! target){
-                window.location = '/#pricing';
-            }
-            jump(target)
-            console.log('funguje')
-        },
+          },
+        
     },
     created(){
         const svgPath = document.querySelectorAll('.path');
