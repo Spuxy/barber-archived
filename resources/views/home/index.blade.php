@@ -13,7 +13,7 @@
                 </div>
                 <div class="column  p-t-xxl firsttext has-text-justified has-text-weight-leight is-size-5 m-l-xxl has-text-grey" id="here">
                     <h1 class="is-size-4 has-text-black-bis">
-                        Kadeřnictví Praha Em Hair
+                        Kadeřnictví SPraha Em Hair
                     </h1>
                     Pokud se rozhodntete navštívit kadeřnictví Em-Hair, ihned zjistíte, že se služby našeho salonu výrazně liší
                     od nabídky běžných kadeřnictví. Preferujeme osobní přístup. Naši klienti se k nám rádi vrací právě proto, že
